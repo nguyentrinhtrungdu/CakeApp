@@ -1,6 +1,7 @@
 package com.example.cakeapp.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -71,9 +73,34 @@ public class MainActivity extends AppCompatActivity {
             ActionViewFlipper();
             getLoaiSanPham();
             getSpMoi();
+            getEventClick();
         } else {
             Toast.makeText(getApplicationContext(), "không có internet, vui lòng kết nối", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void getEventClick() {
+        listViewHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+                    case 0:
+                        Intent banhsinhnhat= new Intent(getApplicationContext(), banhsinhnhatActivity.class);
+                        startActivity(banhsinhnhat);
+                        break;
+                    case 1:
+                        Intent banhmi= new Intent(getApplicationContext(), banhmiActivity.class);
+                        startActivity(banhmi);
+                        break;
+                    case 2:
+                        Intent trangchu= new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(trangchu);
+                        break;
+
+
+                }
+            }
+        });
     }
 
     private void getSpMoi() {
@@ -104,7 +131,9 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(
                         loaiSpModel -> {
                             if (loaiSpModel.isSuccess()) {
-                                Toast.makeText(getApplicationContext(), loaiSpModel.getResult().get(0).getTensanpham(), Toast.LENGTH_LONG).show();
+                                mangloaisp = loaiSpModel.getResult();
+                                loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangloaisp);
+                                listViewHome.setAdapter(loaiSpAdapter);
                             }
                         },
                         throwable -> {
@@ -147,8 +176,7 @@ public class MainActivity extends AppCompatActivity {
         mangloaisp = new ArrayList<>();
         mangSpMoi = new ArrayList<>();
         // Initialize adapter
-        loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangloaisp);
-        listViewHome.setAdapter(loaiSpAdapter);
+
     }
 
     private boolean isConnected(Context context) {

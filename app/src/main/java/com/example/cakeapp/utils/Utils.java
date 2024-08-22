@@ -1,6 +1,6 @@
 package com.example.cakeapp.utils;
 
 public class Utils {
-    public static final String BASE_URL="http://192.168.1.184/banhang/";
+    public static final String BASE_URL="http://192.168.1.143/banhang/";
 
 }

@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,12 +21,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.cakeapp.R;
 import com.example.cakeapp.adapter.LoaiSpAdapter;
+import com.example.cakeapp.adapter.SanPhamMoiAdapter;
 import com.example.cakeapp.model.LoaiSp;
+import com.example.cakeapp.model.SanPhamMoi;
+import com.example.cakeapp.model.SanPhamMoiModel;
 import com.example.cakeapp.retrofit.ApiApp;
 import com.example.cakeapp.retrofit.RetrofitClient;
 import com.example.cakeapp.utils.Utils;
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     List<LoaiSp> mangloaisp;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     ApiApp apiApp;
+    List<SanPhamMoi> mangSpMoi;
+    SanPhamMoiAdapter spAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +70,29 @@ public class MainActivity extends AppCompatActivity {
         if (isConnected(this)) {
             Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
             getLoaiSanPham();
+            getSpMoi();
         } else {
             Toast.makeText(getApplicationContext(), "không có internet, vui lòng kết nối", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void getSpMoi() {
+        compositeDisposable.add(apiApp.getSpMoi()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        sanPhamMoiModel -> {
+                            if (sanPhamMoiModel.isSuccess()){
+                                mangSpMoi = sanPhamMoiModel.getResulst();
+                                spAdapter = new SanPhamMoiAdapter(mangSpMoi, getApplicationContext());
+                                recyclerViewHome.setAdapter(spAdapter);
+                            }
+                        },
+                        throwable -> {
+                            Log.d("logg",throwable.getMessage());
+                            //Toast.makeText(getApplicationContext(),"Khong ket noi duoc voi sever"+throwable.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                ));
     }
 
     private void getLoaiSanPham() {
@@ -107,11 +135,15 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbarhome);
         viewFlipper = findViewById(R.id.viewFlipper);
         recyclerViewHome = findViewById(R.id.recyclerview);
+        RecyclerView.LayoutManager layoutManager =new GridLayoutManager(this,2);
+        recyclerViewHome.setLayoutManager(layoutManager);
+        recyclerViewHome.setHasFixedSize(true);
         listViewHome = findViewById(R.id.listviewhome);
         navigationView = findViewById(R.id.navigationview);
         drawerLayout = findViewById(R.id.drawerlayout);
         // Initialize list
         mangloaisp = new ArrayList<>();
+        mangSpMoi = new ArrayList<>();
         // Initialize adapter
         loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangloaisp);
         listViewHome.setAdapter(loaiSpAdapter);

@@ -61,14 +61,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         apiApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiApp.class);
         Anhxa();
         ActionBar();
-        ActionViewFlipper();
+
         if (isConnected(this)) {
             Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
+            ActionViewFlipper();
             getLoaiSanPham();
             getSpMoi();
         } else {
@@ -82,18 +82,20 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         sanPhamMoiModel -> {
+                            Log.d("Response", sanPhamMoiModel.toString());
                             if (sanPhamMoiModel.isSuccess()){
-                                mangSpMoi = sanPhamMoiModel.getResulst();
-                                spAdapter = new SanPhamMoiAdapter(mangSpMoi, getApplicationContext());
+                                mangSpMoi = sanPhamMoiModel.getResult();
+                                spAdapter = new SanPhamMoiAdapter(getApplicationContext(),mangSpMoi);
                                 recyclerViewHome.setAdapter(spAdapter);
                             }
                         },
                         throwable -> {
-                            Log.d("logg",throwable.getMessage());
-                            //Toast.makeText(getApplicationContext(),"Khong ket noi duoc voi sever"+throwable.getMessage(),Toast.LENGTH_LONG).show();
+                            Log.d("logg", "Error: " + throwable.getMessage());
+                            Toast.makeText(getApplicationContext(), "Không kết nối được với server: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                         }
                 ));
     }
+
 
     private void getLoaiSanPham() {
         compositeDisposable.add(apiApp.getLoaiSp()
@@ -151,22 +153,17 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isConnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        if (connectivityManager != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
-                return networkCapabilities != null &&
-                        (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
-            } else {
-                // Fallback for older Android versions
-                NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-                NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-                return (wifi != null && wifi.isConnected()) || (mobile != null && mobile.isConnected());
-            }
+        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if ((wifi != null&&wifi.isConnected())||(mobile != null&&mobile.isConnected())){
+            return true;
+        }else{
+            return false;
         }
-        return false;
+
+
     }
+
 
     private void ActionBar() {
         setSupportActionBar(toolbar);

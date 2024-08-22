@@ -4,10 +4,11 @@ public class SanPhamMoi {
     int id;
     String tensp;
     String hinhanh;
-    String giasp;
     String mota;
     int loai;
+    int giasp;  // Thay đổi thành String nếu giasp là chuỗi
 
+    // Getter và Setter cho các trường
     public int getId() {
         return id;
     }
@@ -32,14 +33,6 @@ public class SanPhamMoi {
         this.hinhanh = hinhanh;
     }
 
-    public String getGiasp() {
-        return giasp;
-    }
-
-    public void setGiasp(String giasp) {
-        this.giasp = giasp;
-    }
-
     public String getMota() {
         return mota;
     }
@@ -54,5 +47,13 @@ public class SanPhamMoi {
 
     public void setLoai(int loai) {
         this.loai = loai;
+    }
+
+    public int getGiasp() {
+        return giasp;
+    }
+
+    public void setGiasp(int giasp) {
+        this.giasp = giasp;
     }
 }

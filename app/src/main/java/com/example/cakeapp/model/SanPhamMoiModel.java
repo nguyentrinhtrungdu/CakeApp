@@ -3,9 +3,9 @@ package com.example.cakeapp.model;
 import java.util.List;
 
 public class SanPhamMoiModel {
-    boolean success;
-    String message;
-    List<SanPhamMoi> resulst;
+    private boolean success;
+    private String message;
+    private List<SanPhamMoi> result; // Đổi tên từ resulst thành result
 
     public boolean isSuccess() {
         return success;
@@ -23,11 +23,11 @@ public class SanPhamMoiModel {
         this.message = message;
     }
 
-    public List<SanPhamMoi> getResulst() {
-        return resulst;
+    public List<SanPhamMoi> getResult() {
+        return result;
     }
 
-    public void setResulst(List<SanPhamMoi> resulst) {
-        this.resulst = resulst;
+    public void setResult(List<SanPhamMoi> result) {
+        this.result = result;
     }
 }

@@ -2,10 +2,12 @@ package com.example.cakeapp.activity;
 
 import android.icu.text.ConstrainedFieldPosition;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -39,6 +41,9 @@ public class banhsinhnhatActivity extends AppCompatActivity {
     int loai ;
     BanhSinhNhatAdapter adapterBsn;
     List<SanPhamMoi> sanPhamMoiList;
+    LinearLayoutManager linearLayoutManager;
+    Handler handler =new Handler();
+    boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +54,84 @@ public class banhsinhnhatActivity extends AppCompatActivity {
         loai = getIntent().getIntExtra("loai",1);
         AnhXa();
         ActionToolBar();
-        getData();
+        getData(page);
+        addEventLoand();
     }
 
-    private void getData() {
-        compositeDisposable.add(apiApp.getSanPham(page,loai)
+    private void addEventLoand() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1) && !isLoading) {
+                    isLoading = true;
+                    loadMore();
+
+
+                }
+            }
+
+        });
+    }
+
+    private void loadMore() {
+        // Thêm item null để hiển thị trạng thái loading
+        sanPhamMoiList.add(null);
+        adapterBsn.notifyItemInserted(sanPhamMoiList.size() - 1);
+
+        // Giả lập độ trễ để tải thêm dữ liệu
+        handler.postDelayed(() -> {
+            // Xóa item null
+            sanPhamMoiList.remove(sanPhamMoiList.size() - 1);
+            adapterBsn.notifyItemRemoved(sanPhamMoiList.size());
+
+            // Tăng số trang và tải dữ liệu tiếp theo
+            page++;
+            getData(page);
+        }, 2000); // Thay đổi thời gian nếu cần
+    }
+
+
+    private void getData(int page) {
+        compositeDisposable.add(apiApp.getSanPham(page, loai)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         sanPhamMoiModel -> {
-                            if(sanPhamMoiModel.isSuccess()){
-                                sanPhamMoiList= sanPhamMoiModel.getResult();
-                                adapterBsn = new BanhSinhNhatAdapter(getApplicationContext(), sanPhamMoiList);
-                                recyclerView.setAdapter(adapterBsn);
+                            if (sanPhamMoiModel.isSuccess()) {
+                                if (adapterBsn == null) {
+                                    sanPhamMoiList = sanPhamMoiModel.getResult();
+                                    adapterBsn = new BanhSinhNhatAdapter(getApplicationContext(), sanPhamMoiList);
+                                    recyclerView.setAdapter(adapterBsn);
+                                } else {
+                                    int vitri = sanPhamMoiList.size();
+                                    sanPhamMoiList.addAll(sanPhamMoiModel.getResult());
+                                    adapterBsn.notifyItemRangeInserted(vitri, sanPhamMoiModel.getResult().size());
+                                }
+
+                                if (sanPhamMoiModel.getResult().isEmpty()) {
+                                    Toast.makeText(getApplicationContext(), "Hết dữ liệu rồi", Toast.LENGTH_LONG).show();
+                                    isLoading = true; // Dữ liệu đã hết
+                                } else {
+                                    isLoading = false; // Dữ liệu tiếp theo đã được tải
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Hết dữ liệu rồi", Toast.LENGTH_LONG).show();
+                                isLoading = true; // Dữ liệu đã hết
                             }
                         },
                         throwable -> {
-                            Toast.makeText(getApplicationContext(),"khong ket noi voi sever",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Không kết nối với server", Toast.LENGTH_LONG).show();
+                            isLoading = false; // Đặt lại trạng thái tải khi có lỗi
                         }
                 ));
     }
+
 
     private void ActionToolBar() {
         setSupportActionBar(toolbar);
@@ -78,8 +141,8 @@ public class banhsinhnhatActivity extends AppCompatActivity {
     private void AnhXa() {
         toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerview_bsn);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         sanPhamMoiList =new ArrayList<>();
     }

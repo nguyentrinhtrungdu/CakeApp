@@ -35,13 +35,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
-                    android:textSize="20sp"
+                    android:textSize="28sp"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/holo_red_light"
+                    android:textColor="#ce9239"
                     android:textStyle="bold"
                     android:text="Sản phẩm mới nhất"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-black"
+                />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview"
                     android:layout_marginTop="10dp"
@@ -57,11 +60,12 @@
             android:layout_gravity="start"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ListView
-                android:layout_marginTop="10dp"
                 android:id="@+id/listviewhome"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>
 

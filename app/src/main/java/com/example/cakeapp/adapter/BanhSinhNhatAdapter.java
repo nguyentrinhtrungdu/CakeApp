@@ -1,6 +1,7 @@
 package com.example.cakeapp.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class BanhSinhNhatAdapter extends RecyclerView.Adapter<BanhSinhNhatAdapte
         holder.tensp.setText(sanPham.getTensp());
         DecimalFormat decimalFormat =new DecimalFormat("###,###,###");
         holder.giasp.setText("Giá: "+decimalFormat.format(sanPham.getGiasp())+" Đ");
+        Log.d("BanhSinhNhatAdapter", "Mô tả sản phẩm: " + sanPham.getMota());
         holder.mota.setText(sanPham.getMota());
         Glide.with(context).load(sanPham.getHinhanh()).into(holder.hinhanh);
     }

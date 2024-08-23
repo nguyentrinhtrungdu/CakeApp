@@ -85,17 +85,17 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i){
                     case 0:
-                        Intent banhsinhnhat= new Intent(getApplicationContext(), banhsinhnhatActivity.class);
-                        banhsinhnhat.putExtra("loai",1);
-                        startActivity(banhsinhnhat);
+                        Intent trangchu= new Intent(getApplicationContext(), MainActivity.class);
+                        trangchu.putExtra("loai",1);
+                        startActivity(trangchu);
                         break;
                     case 1:
-                        Intent banhmi= new Intent(getApplicationContext(), banhmiActivity.class);
-                        startActivity(banhmi);
+                        Intent banhsinhnhat= new Intent(getApplicationContext(), banhsinhnhatActivity.class);
+                        startActivity(banhsinhnhat);
                         break;
                     case 2:
-                        Intent trangchu= new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(trangchu);
+                        Intent banhmi= new Intent(getApplicationContext(), banhmiActivity.class);
+                        startActivity(banhmi);
                         break;
 
 

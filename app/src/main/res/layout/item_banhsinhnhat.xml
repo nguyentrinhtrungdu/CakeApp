@@ -6,7 +6,7 @@
     app:cardCornerRadius="4dp"
     android:layout_margin="5dp"
 
-    android:layout_height="wrap_content">
+    android:layout_height="200dp">
     <LinearLayout
         android:layout_margin="5dp"
         android:weightSum="10"
@@ -44,7 +44,6 @@
                 android:id="@+id/itembsn_mota"
                 android:textSize="14sp"
                 android:text="Mô Tả:"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

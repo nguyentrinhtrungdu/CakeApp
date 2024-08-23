@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (i){
                     case 0:
                         Intent banhsinhnhat= new Intent(getApplicationContext(), banhsinhnhatActivity.class);
+                        banhsinhnhat.putExtra("loai",1);
                         startActivity(banhsinhnhat);
                         break;
                     case 1:

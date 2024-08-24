@@ -3,11 +3,13 @@ package com.example.cakeapp.activity;
 import android.icu.text.ConstrainedFieldPosition;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -135,8 +137,28 @@ public class banhsinhnhatActivity extends AppCompatActivity {
 
     private void ActionToolBar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            if (loai == 1) {
+                actionBar.setTitle("Bánh Sinh Nhật");
+            } else if (loai == 0) {
+                actionBar.setTitle("Bánh Mì");
+            } else {
+                actionBar.setTitle("Default Title"); // Tiêu đề mặc định nếu không khớp với điều kiện nào
+            }
+            actionBar.setDisplayHomeAsUpEnabled(true); // Hiển thị nút quay lại
+        }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Đóng Activity hiện tại và quay lại Activity trước đó
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void AnhXa() {
         toolbar = findViewById(R.id.toolbar);

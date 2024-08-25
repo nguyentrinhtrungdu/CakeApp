@@ -178,6 +178,9 @@ public class MainActivity extends AppCompatActivity {
         mangloaisp = new ArrayList<>();
         mangSpMoi = new ArrayList<>();
         // Initialize adapter
+        if(Utils.manggiohang==null){
+            Utils.manggiohang=new ArrayList<>();
+        }
 
     }
 

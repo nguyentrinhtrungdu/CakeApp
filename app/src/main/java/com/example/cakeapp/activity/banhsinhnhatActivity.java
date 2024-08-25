@@ -50,7 +50,7 @@ public class banhsinhnhatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        //EdgeToEdge.enable(this);
         setContentView(R.layout.activity_banhsinhnhat);
         apiApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiApp.class);
         loai = getIntent().getIntExtra("loai",1);

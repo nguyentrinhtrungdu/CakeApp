@@ -57,11 +57,13 @@ public class BanhSinhNhatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             myViewHolder.giasp.setText("Giá: "+decimalFormat.format(sanPham.getGiasp())+" Đ");
             myViewHolder.mota.setText(sanPham.getMota());
             Glide.with(context).load(sanPham.getHinhanh()).into(myViewHolder.hinhanh);
+
             myViewHolder.setItemClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int pos, boolean isLongClick) {
                     if(!isLongClick){
                         Intent intent=new Intent(context, ChiTietActivity.class);
+                        intent.putExtra("chitiet",sanPham);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }

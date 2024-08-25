@@ -11,8 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.cakeapp.Interface.IImageClickListenner;
 import com.example.cakeapp.R;
+import com.example.cakeapp.model.EventBus.TinhTongEvent;
 import com.example.cakeapp.model.GioHang;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -43,8 +47,28 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
         DecimalFormat decimalFormat =new DecimalFormat("###,###,###");
         holder.item_giohang_gia.setText("Giá: "+decimalFormat.format(gioHang.getGiasp())+" Đ");
         int gia = gioHang.getSoluong()* gioHang.getGiasp();
-        holder.item_giohang_giasp2.setText(decimalFormat.format(gia));
-
+        holder.item_giohang_giasp2.setText(decimalFormat.format(gia)+" Đ");
+        holder.setListenner(new IImageClickListenner() {
+            @Override
+            public void onImageClick(View view, int pos, int giatri) {
+                if(giatri==1){
+                    if(gioHangList.get(pos).getSoluong()>1){
+                        int soluongmoi= gioHangList.get(pos).getSoluong()-1;
+                        gioHangList.get(pos).setSoluong(soluongmoi);
+                    }
+            }
+                else if(giatri==2){
+                    if(gioHangList.get(pos).getSoluong()<11){
+                        int soluongmoi= gioHangList.get(pos).getSoluong()+1;
+                        gioHangList.get(pos).setSoluong(soluongmoi);
+                    }
+                }
+                holder.item_giohang_soluong.setText(gioHangList.get(pos).getSoluong()+" ");
+                int gia = gioHangList.get(pos).getSoluong()* gioHangList.get(pos).getGiasp();
+                holder.item_giohang_giasp2.setText(decimalFormat.format(gia));
+                EventBus.getDefault().postSticky(new TinhTongEvent());
+            }
+        });
 
 
     }
@@ -54,9 +78,10 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
         return gioHangList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        ImageView item_giohang_image;
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        ImageView item_giohang_image,imgtru,imgcong;
         TextView item_giohang_tensp,item_giohang_gia,item_giohang_soluong,item_giohang_giasp2;
+        IImageClickListenner listenner;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,7 +90,24 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
             item_giohang_gia = itemView.findViewById(R.id.item_giohang_gia);
             item_giohang_soluong = itemView.findViewById(R.id.item_giohang_soluong);
             item_giohang_giasp2 = itemView.findViewById(R.id.item_giohang_giasp2);
+            imgtru = itemView.findViewById(R.id.item_giohang_tru);
+            imgcong = itemView.findViewById(R.id.item_giohang_cong);
 
+            imgtru.setOnClickListener(this);
+            imgcong.setOnClickListener(this);
+        }
+
+        public void setListenner(IImageClickListenner listenner) {
+            this.listenner = listenner;
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(view==imgtru){
+                listenner.onImageClick(view, getAdapterPosition(),1);
+            }else if(view== imgcong){
+                listenner.onImageClick(view, getAdapterPosition(),2);
+            }
         }
     }
 }

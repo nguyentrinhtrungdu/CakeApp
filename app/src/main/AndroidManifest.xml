@@ -33,6 +33,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.GioHangActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CakeApp" />
+        <activity
             android:name=".activity.ChiTietActivity"
             android:exported="false" />
         <activity

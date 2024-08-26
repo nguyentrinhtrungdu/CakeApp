@@ -42,6 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:id="@+id/txttongtien"
                     android:text="50 jack"
                     android:textSize="20sp"
                     android:textColor="@android:color/holo_red_light"
@@ -56,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"/>
             <LinearLayout
+
                 android:layout_marginLeft="5dp"
                 android:padding="5dp"
                 android:orientation="horizontal"
@@ -66,6 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:id="@+id/txtsdt"
                     android:layout_marginLeft="5dp"
                     android:text="123456789"
                     android:textSize="18sp"
@@ -90,6 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:id="@+id/txtemail"
                     android:layout_marginLeft="5dp"
                     android:text="Tan@gmail.com"
                     android:textSize="18sp"
@@ -118,6 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtdiachi"
             android:drawableLeft="@drawable/baseline_add_location_24"
             android:drawablePadding="5dp"
 
@@ -129,6 +134,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btndathang"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:background="#edd0ba"

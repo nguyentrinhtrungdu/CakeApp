@@ -55,11 +55,14 @@ dependencies {
     implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     //bradge
-    implementation'com.nex3z:notification-badge:1.0.4'
+    implementation 'com.nex3z:notification-badge:1.0.4'
     //even bus
     implementation 'org.greenrobot:eventbus:3.2.0'
     //paper
     implementation 'io.github.pilgr:paperdb:2.7.1'
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.9'
+
 
 
 }

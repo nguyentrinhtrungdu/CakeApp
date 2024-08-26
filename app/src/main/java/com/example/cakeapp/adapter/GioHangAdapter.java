@@ -1,11 +1,14 @@
 package com.example.cakeapp.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +18,7 @@ import com.example.cakeapp.Interface.IImageClickListenner;
 import com.example.cakeapp.R;
 import com.example.cakeapp.model.EventBus.TinhTongEvent;
 import com.example.cakeapp.model.GioHang;
+import com.example.cakeapp.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -55,18 +59,44 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                     if(gioHangList.get(pos).getSoluong()>1){
                         int soluongmoi= gioHangList.get(pos).getSoluong()-1;
                         gioHangList.get(pos).setSoluong(soluongmoi);
-                    }
-            }
-                else if(giatri==2){
-                    if(gioHangList.get(pos).getSoluong()<11){
-                        int soluongmoi= gioHangList.get(pos).getSoluong()+1;
-                        gioHangList.get(pos).setSoluong(soluongmoi);
+
+                        holder.item_giohang_soluong.setText(gioHangList.get(pos).getSoluong()+" ");
+                        int gia = gioHangList.get(pos).getSoluong()* gioHangList.get(pos).getGiasp();
+                        holder.item_giohang_giasp2.setText(decimalFormat.format(gia)+" Đ");
+                        EventBus.getDefault().postSticky(new TinhTongEvent());
+                    } else if (gioHangList.get(pos).getSoluong()==1) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
+                        builder.setTitle("Thong Bao");
+                        builder.setMessage("ban co muon xoa san pham khoi gio hang");
+                        builder.setPositiveButton("dong Y", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Utils.manggiohang.remove(pos);
+                                notifyDataSetChanged();
+                                EventBus.getDefault().postSticky(new TinhTongEvent());
+                            }
+                        });
+                        builder.setNegativeButton("huy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        builder.show();
+
                     }
                 }
-                holder.item_giohang_soluong.setText(gioHangList.get(pos).getSoluong()+" ");
-                int gia = gioHangList.get(pos).getSoluong()* gioHangList.get(pos).getGiasp();
-                holder.item_giohang_giasp2.setText(decimalFormat.format(gia));
-                EventBus.getDefault().postSticky(new TinhTongEvent());
+                else if(giatri==2){
+
+                        int soluongmoi= gioHangList.get(pos).getSoluong()+1;
+                        gioHangList.get(pos).setSoluong(soluongmoi);
+
+                    holder.item_giohang_soluong.setText(gioHangList.get(pos).getSoluong()+" ");
+                    int gia = gioHangList.get(pos).getSoluong()* gioHangList.get(pos).getGiasp();
+                    holder.item_giohang_giasp2.setText(decimalFormat.format(gia)+" Đ");
+                    EventBus.getDefault().postSticky(new TinhTongEvent());
+                }
+
             }
         });
 

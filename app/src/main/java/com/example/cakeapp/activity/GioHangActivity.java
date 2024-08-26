@@ -1,5 +1,6 @@
 package com.example.cakeapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +39,7 @@ public class GioHangActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
         setContentView(R.layout.activity_gio_hang);
         initView();
         initControl();
@@ -73,6 +74,13 @@ public class GioHangActivity extends AppCompatActivity {
             adapter = new GioHangAdapter(getApplicationContext(),Utils.manggiohang);
             recyclerView.setAdapter(adapter);
         }
+        btnmuahang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),ThanhToanActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView() {

@@ -32,5 +32,11 @@ public interface ApiApp {
             @Field("username") String username,
             @Field("num") String num
     );
+    @POST("dangnhap.php")
+    @FormUrlEncoded
+    Observable<UserModel> dangNhap(
+            @Field("email") String email,
+            @Field("pass") String pass
+    );
 
 }

@@ -52,6 +52,10 @@ public interface ApiApp {
 
 
     );
-
+    @POST("timkiem.php")
+    @FormUrlEncoded
+    Observable<SanPhamMoiModel> search(
+            @Field("search") String search
+    );
 
 }

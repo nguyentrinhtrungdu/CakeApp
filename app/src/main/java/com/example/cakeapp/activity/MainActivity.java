@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     SanPhamMoiAdapter spAdapter;
     NotificationBadge badge;
     FrameLayout frameLayout ;
+    ImageView imgsearch;
 
 
     @Override
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void Anhxa() {
+        imgsearch  = findViewById(R.id.imgsearch);
         toolbar = findViewById(R.id.toolbarhome);
         viewFlipper = findViewById(R.id.viewFlipper);
         recyclerViewHome = findViewById(R.id.recyclerview);
@@ -201,6 +203,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        imgsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

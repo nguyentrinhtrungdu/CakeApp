@@ -36,6 +36,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
         setContentView(R.layout.activity_login);
         initView();
         initControl();
@@ -95,6 +96,7 @@ public class Login extends AppCompatActivity {
                                 isLogin = true;
                                 Paper.book().write("islogin", isLogin);
                                 Utils.user_current = userModel.getResult().get(0);
+                                Paper.book().write("id", Utils.user_current.getId());
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -109,17 +111,7 @@ public class Login extends AppCompatActivity {
                 ));
     }
 
-    private void logout() {
-        // Clear saved credentials
-        Paper.book().delete("email");
-        Paper.book().delete("pass");
-        Paper.book().delete("islogin");
 
-        // Redirect to Login
-        Intent intent = new Intent(getApplicationContext(), Login.class);
-        startActivity(intent);
-        finish();
-    }
 
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

@@ -8,6 +8,9 @@ public class User {
     String username;
     String num;
 
+
+
+
     public int getId() {
         return id;
     }

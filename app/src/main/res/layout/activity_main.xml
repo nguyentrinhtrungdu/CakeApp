@@ -28,15 +28,15 @@
                     android:layout_height="?attr/actionBarSize">
                     <ImageView
                         android:id="@+id/imgsearch"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:src="@drawable/baseline_search_24"
-                        android:layout_width="wrap_content"
+                        android:layout_width="35dp"
                         android:layout_height="?attr/actionBarSize"/>
                     <FrameLayout
                         android:id="@+id/framegiohang"
-                        android:layout_marginRight="10dp"
 
-                        android:layout_width="60dp"
+
+                        android:layout_width="50dp"
                         android:layout_height="?attr/actionBarSize">
                         <com.nex3z.notificationbadge.NotificationBadge
                             android:id="@+id/menu_sl"
@@ -49,6 +49,14 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"/>
                     </FrameLayout>
+                    <ImageView
+                        android:id="@+id/imgProfile"
+                        android:layout_width="40dp"
+                        android:layout_height="?attr/actionBarSize"
+                        android:src="@drawable/baseline_person_24"
+                        android:layout_marginRight="10dp"
+                         />
+
                 </LinearLayout>
 
 

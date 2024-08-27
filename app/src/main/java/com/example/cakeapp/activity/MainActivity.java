@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -21,6 +22,7 @@ import android.widget.ViewFlipper;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -62,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
     SanPhamMoiAdapter spAdapter;
     NotificationBadge badge;
     FrameLayout frameLayout ;
-    ImageView imgsearch;
+    ImageView imgsearch,imgProfile;
+
 
 
     @Override
@@ -182,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerlayout);
         badge= findViewById(R.id.menu_sl);
         frameLayout=findViewById(R.id.framegiohang);
+        imgProfile = findViewById(R.id.imgProfile);
         // Initialize list
         mangloaisp = new ArrayList<>();
         mangSpMoi = new ArrayList<>();
@@ -210,7 +214,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        imgProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(view);
+            }
+        });
     }
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.profile_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getTitle().toString()) {
+                    case "Profile":
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        return true;
+                    case "Logout":
+                        Toast.makeText(getApplicationContext(), "Logout clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
+    }
+
 
     @Override
     protected void onResume() {

@@ -228,10 +228,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getTitle().toString()) {
-                    case "Profile":
+                    case "Thông Tin Của Bạn":
                         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         return true;
-                    case "Logout":
+                    case "Đăng Xuất":
                         Toast.makeText(getApplicationContext(), "Logout clicked", Toast.LENGTH_SHORT).show();
                         return true;
                     default:

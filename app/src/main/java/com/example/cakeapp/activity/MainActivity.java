@@ -2,6 +2,7 @@ package com.example.cakeapp.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
@@ -45,6 +46,7 @@ import com.nex3z.notificationbadge.NotificationBadge;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -224,22 +226,40 @@ public class MainActivity extends AppCompatActivity {
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.getMenuInflater().inflate(R.menu.profile_menu, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getTitle().toString()) {
-                    case "Thông Tin Của Bạn":
-                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                        return true;
-                    case "Đăng Xuất":
-                        Toast.makeText(getApplicationContext(), "Logout clicked", Toast.LENGTH_SHORT).show();
-                        return true;
-                    default:
-                        return false;
-                }
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getTitle().toString()) {
+                case "Thông Tin Của Bạn":
+                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    return true;
+                case "Đăng Xuất":
+                    logout();
+                    return true;
+                default:
+                    return false;
             }
         });
         popupMenu.show();
+    }
+
+    private void logout() {
+        // Clear user session data
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear(); // or use editor.remove("key") to remove specific items
+        editor.apply();
+
+        // Clear any other app-specific session data
+        Paper.book().delete("email");
+        Paper.book().delete("pass");
+        Paper.book().delete("islogin");
+        Utils.user_current = null;
+        Utils.manggiohang.clear();
+
+        // Redirect to the login screen
+        Intent intent = new Intent(getApplicationContext(), Login.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Close the current activity
     }
 
 

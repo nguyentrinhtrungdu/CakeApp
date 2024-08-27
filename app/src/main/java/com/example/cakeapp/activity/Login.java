@@ -25,12 +25,13 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Login extends AppCompatActivity {
-    TextView txtdangki;
-    EditText email, pass;
-    Button btnlog;
-    ApiApp apiApp;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    boolean isLogin = false;
+    private TextView txtdangki;
+    private EditText email, pass;
+    private Button btnlog;
+    private ApiApp apiApp;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private boolean isLogin = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,36 +39,6 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         initView();
         initControl();
-    }
-
-    private void initControl() {
-        txtdangki.setOnClickListener(v -> {
-            Intent intent = new Intent(Login.this, Sign.class);
-            startActivity(intent);
-        });
-
-        btnlog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String str_email = email.getText().toString().trim();
-                String str_pass = pass.getText().toString().trim();
-
-                if (TextUtils.isEmpty(str_email)) {
-                    Toast.makeText(getApplicationContext(), "Bạn chưa nhập Email", Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(str_pass)) {
-                    Toast.makeText(getApplicationContext(), "Bạn chưa nhập Pass", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Save credentials
-                    Paper.book().write("email", str_email);
-                    Paper.book().write("pass", str_pass);
-                    dangNhap(str_email, str_pass);
-
-
-                }
-            }
-        });
-
-
     }
 
     private void initView() {
@@ -79,49 +50,80 @@ public class Login extends AppCompatActivity {
         btnlog = findViewById(R.id.btnlog);
 
         // Read saved data
-        if (Paper.book().read("email") != null && Paper.book().read("pass") != null) {
-            email.setText(Paper.book().read("email"));
-            pass.setText(Paper.book().read("pass"));
-            if(Paper.book().read("islogin")!=null){
-                boolean flag= Paper.book().read("islogin");
-                if(flag){
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            dangNhap(Paper.book().read("email"), Paper.book().read("pass"));
-                        }
-                    },1000);
-                }
-            }
+        String savedEmail = Paper.book().read("email", "");
+        String savedPass = Paper.book().read("pass", "");
+        boolean isLoggedIn = Paper.book().read("islogin", false);
+
+        if (!TextUtils.isEmpty(savedEmail) && !TextUtils.isEmpty(savedPass) && isLoggedIn) {
+            email.setText(savedEmail);
+            pass.setText(savedPass);
+            // Automatically login if credentials exist
+            new Handler().postDelayed(() -> loginUser(savedEmail, savedPass), 1000);
         }
     }
 
-    private void dangNhap(String email,String pass) {
+    private void initControl() {
+        txtdangki.setOnClickListener(v -> {
+            Intent intent = new Intent(Login.this, Sign.class);
+            startActivity(intent);
+        });
+
+        btnlog.setOnClickListener(view -> {
+            String strEmail = email.getText().toString().trim();
+            String strPass = pass.getText().toString().trim();
+
+            if (TextUtils.isEmpty(strEmail)) {
+                showToast("Bạn chưa nhập Email");
+            } else if (TextUtils.isEmpty(strPass)) {
+                showToast("Bạn chưa nhập Pass");
+            } else {
+                // Save credentials
+                Paper.book().write("email", strEmail);
+                Paper.book().write("pass", strPass);
+                loginUser(strEmail, strPass);
+            }
+        });
+    }
+
+    private void loginUser(String email, String pass) {
         compositeDisposable.add(apiApp.dangNhap(email, pass)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         userModel -> {
-
                             if (userModel.isSuccess() && userModel.getResult() != null && !userModel.getResult().isEmpty()) {
-                                isLogin=true;
+                                isLogin = true;
                                 Paper.book().write("islogin", isLogin);
                                 Utils.user_current = userModel.getResult().get(0);
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(getApplicationContext(), userModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                showToast(userModel.getMessage());
                             }
                         },
                         throwable -> {
                             Log.e("Login", "Error: " + throwable.getMessage());
-                            Toast.makeText(getApplicationContext(), "Đăng nhập không thành công. Lỗi: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                            showToast("Đăng nhập không thành công. Lỗi: " + throwable.getMessage());
                         }
                 ));
-
     }
 
+    private void logout() {
+        // Clear saved credentials
+        Paper.book().delete("email");
+        Paper.book().delete("pass");
+        Paper.book().delete("islogin");
+
+        // Redirect to Login
+        Intent intent = new Intent(getApplicationContext(), Login.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onResume() {

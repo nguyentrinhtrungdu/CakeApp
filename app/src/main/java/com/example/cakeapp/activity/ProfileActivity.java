@@ -128,14 +128,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         int userId = Utils.user_current.getId(); // Hoặc dùng Paper.book().read("user_id", -1);
 
-        // Tạo một đối tượng User
-        User user = new User();
-        user.setId(userId);
-        user.setUsername(strUsername);
-        user.setEmail(strEmail);
-        user.setPass(strPass);
-        user.setNum(strNum);
-
         compositeDisposable.add(apiApp.updateUser(userId, strUsername, strEmail, strPass, strNum)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -152,6 +144,7 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                 ));
     }
+
 
     @Override
     protected void onDestroy() {

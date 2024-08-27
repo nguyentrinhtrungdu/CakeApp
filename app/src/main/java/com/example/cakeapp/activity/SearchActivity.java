@@ -8,18 +8,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cakeapp.R;
 import com.example.cakeapp.adapter.BanhSinhNhatAdapter;
 import com.example.cakeapp.model.SanPhamMoi;
+import com.example.cakeapp.model.SanPhamMoiModel;
 import com.example.cakeapp.retrofit.ApiApp;
 import com.example.cakeapp.retrofit.RetrofitClient;
 import com.example.cakeapp.utils.Utils;
@@ -39,20 +36,20 @@ public class SearchActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     BanhSinhNhatAdapter adapterBsn;
     List<SanPhamMoi> sanPhamMoiList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         initView();
         ActionToolBar();
-
     }
 
     private void initView() {
         sanPhamMoiList = new ArrayList<>();
         apiApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiApp.class);
 
-        editsearch = findViewById(R.id.editsearch); // Corrected initialization
+        editsearch = findViewById(R.id.editsearch);
         toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerview_search);
 
@@ -70,8 +67,9 @@ public class SearchActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 0) {
                     sanPhamMoiList.clear();
-                    adapterBsn = new BanhSinhNhatAdapter(getApplicationContext(), sanPhamMoiList);
-                    recyclerView.setAdapter(adapterBsn);
+                    if (adapterBsn != null) {
+                        adapterBsn.notifyDataSetChanged();
+                    }
                 } else {
                     getDataSearch(charSequence.toString());
                 }
@@ -84,31 +82,54 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-
-    private void getDataSearch(String s) {
-        compositeDisposable.add(apiApp.search(s)
+    private void getDataSearch(String searchQuery) {
+        compositeDisposable.add(apiApp.search(searchQuery)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         sanPhamMoiModel -> {
+                            // Xử lý phản hồi từ API
                             if (sanPhamMoiModel.isSuccess()) {
                                 List<SanPhamMoi> results = sanPhamMoiModel.getResult();
-                                if (results != null) {
+                                if (results != null && !results.isEmpty()) {
+                                    // Có kết quả tìm kiếm
                                     sanPhamMoiList.clear();
                                     sanPhamMoiList.addAll(results);
-                                    adapterBsn.notifyDataSetChanged();
+                                    if (adapterBsn == null) {
+                                        adapterBsn = new BanhSinhNhatAdapter(getApplicationContext(), sanPhamMoiList);
+                                        recyclerView.setAdapter(adapterBsn);
+                                    } else {
+                                        adapterBsn.notifyDataSetChanged();
+                                    }
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "No products found", Toast.LENGTH_SHORT).show();
+                                    // Không có sản phẩm, chỉ hiển thị thông báo
+                                    sanPhamMoiList.clear(); // Đảm bảo rằng danh sách sản phẩm trống
+                                    if (adapterBsn != null) {
+                                        adapterBsn.notifyDataSetChanged(); // Cập nhật adapter
+                                    }
+                                    Toast.makeText(getApplicationContext(), "Không có sản phẩm tìm kiếm", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
+                                // Thông báo lỗi từ API
+                                sanPhamMoiList.clear(); // Đảm bảo rằng danh sách sản phẩm trống
+                                if (adapterBsn != null) {
+                                    adapterBsn.notifyDataSetChanged(); // Cập nhật adapter
+                                }
                                 Toast.makeText(getApplicationContext(), sanPhamMoiModel.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         },
                         throwable -> {
+                            // Xử lý lỗi
+                            Log.e("SearchActivity", "Error: ", throwable);
+                            sanPhamMoiList.clear(); // Đảm bảo rằng danh sách sản phẩm trống
+                            if (adapterBsn != null) {
+                                adapterBsn.notifyDataSetChanged(); // Cập nhật adapter
+                            }
                             Toast.makeText(getApplicationContext(), "Error: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                 ));
     }
+
 
     private void ActionToolBar() {
         setSupportActionBar(toolbar);

@@ -3,13 +3,20 @@ package com.example.cakeapp.retrofit;
 
 import com.example.cakeapp.model.LoaiSpModel;
 import com.example.cakeapp.model.SanPhamMoiModel;
+import com.example.cakeapp.model.User;
 import com.example.cakeapp.model.UserModel;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+
 
 public interface ApiApp {
     @GET("getloaisp.php")
@@ -56,6 +63,21 @@ public interface ApiApp {
     @FormUrlEncoded
     Observable<SanPhamMoiModel> search(
             @Field("search") String search
+    );
+
+    @GET("getUserById.php")
+    Observable<UserModel> getUserById(@Query("id") int userId);
+
+
+
+    @POST("updateUser.php")
+    @FormUrlEncoded
+    Observable<User> updateUser(
+            @Field("id") int id,
+            @Field("username") String username,
+            @Field("email") String email,
+            @Field("pass") String pass,
+            @Field("num") String num
     );
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 public class UserModel {
     private boolean success;
     private String message;
+    private List<User> result;
 
     public boolean isSuccess() {
         return success;
@@ -29,6 +30,4 @@ public class UserModel {
     public void setResult(List<User> result) {
         this.result = result;
     }
-
-    private List<User> result;
 }

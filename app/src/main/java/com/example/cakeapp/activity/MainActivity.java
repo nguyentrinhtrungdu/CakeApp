@@ -252,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
         Paper.book().delete("email");
         Paper.book().delete("pass");
         Paper.book().delete("islogin");
+        Paper.book().delete("user_id");
         Utils.user_current = null;
         Utils.manggiohang.clear();
 

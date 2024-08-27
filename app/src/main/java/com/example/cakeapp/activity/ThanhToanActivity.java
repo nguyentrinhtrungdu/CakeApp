@@ -86,6 +86,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                         .subscribe(
                                 userModel -> {
                                     if (userModel.isSuccess()) {
+                                        Utils.manggiohang.clear();
                                         Toast.makeText(getApplicationContext(), "Mua hàng thành công", Toast.LENGTH_LONG).show();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         startActivity(intent);

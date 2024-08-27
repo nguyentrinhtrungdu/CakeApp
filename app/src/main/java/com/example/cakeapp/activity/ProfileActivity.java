@@ -3,6 +3,7 @@ package com.example.cakeapp.activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -128,14 +129,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         int userId = Utils.user_current.getId(); // Hoặc dùng Paper.book().read("user_id", -1);
 
-        // Tạo một đối tượng User
-        User user = new User();
-        user.setId(userId);
-        user.setUsername(strUsername);
-        user.setEmail(strEmail);
-        user.setPass(strPass);
-        user.setNum(strNum);
-
         compositeDisposable.add(apiApp.updateUser(userId, strUsername, strEmail, strPass, strNum)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -151,6 +144,14 @@ public class ProfileActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Lỗi: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                         }
                 ));
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();  // Close the activity when the back button is pressed
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

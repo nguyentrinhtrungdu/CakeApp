@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="casual"
+        android:fontFamily="@font/adlam_display"
         android:text="DELIVERID FAVORITE BAKERY"
         android:textColor="#943f18"
         android:textSize="18sp"

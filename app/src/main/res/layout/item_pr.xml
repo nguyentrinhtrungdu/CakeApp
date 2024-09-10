@@ -63,34 +63,20 @@
         app:layout_constraintStart_toEndOf="@id/itemsp_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/itemsp_type"
-        app:layout_constraintWidth="0dp"
-        app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintWidth_max="100dp"/>
-
-    <!-- Product Type -->
-    <TextView
-        android:id="@+id/itemsp_type"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Type"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/itemsp_description"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/itemsp_gia"
         app:layout_constraintWidth="0dp"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintWidth_max="100dp"/>
 
-    <!-- Product Price -->
+    <!-- Product Type -->
+
     <TextView
         android:id="@+id/itemsp_gia"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Price"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/itemsp_type"
+        app:layout_constraintStart_toEndOf="@id/itemsp_description"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -43,21 +43,15 @@ public class SanPhamListAdapter extends RecyclerView.Adapter<SanPhamListAdapter.
         // Bind data to views
         holder.txtTen.setText(sanPhamMoi.getTensp());
         holder.txtMota.setText(sanPhamMoi.getMota());
-        holder.txtLoai.setText(sanPhamMoi.getLoai());// Set the type
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+
         holder.txtGia.setText(decimalFormat.format(sanPhamMoi.getGiasp()) + " Đ");
 
         Glide.with(context)
                 .load(sanPhamMoi.getHinhanh())
                 .into(holder.imgHinhAnh);
 
-        // Handle item click
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ChiTietActivity.class);
-            intent.putExtra("chitiet", sanPhamMoi);
-            context.startActivity(intent);
-        });
     }
 
     @Override
@@ -74,8 +68,8 @@ public class SanPhamListAdapter extends RecyclerView.Adapter<SanPhamListAdapter.
             txtTen = itemView.findViewById(R.id.itemsp_name);
             imgHinhAnh = itemView.findViewById(R.id.itemsp_image);
             txtMota = itemView.findViewById(R.id.itemsp_description);
-            txtLoai = itemView.findViewById(R.id.itemsp_type); // Initialize type TextView
             txtGia = itemView.findViewById(R.id.itemsp_gia);
+
         }
     }
 }

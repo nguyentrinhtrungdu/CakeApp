@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <!-- Serial Number -->
+    <TextView
+        android:id="@+id/itemsp_stt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/itemsp_name"
+        app:layout_constraintWidth="0dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintWidth_max="40dp"/>
+
+    <!-- Product Name -->
+    <TextView
+        android:id="@+id/itemsp_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Product Name"
+        android:textSize="14sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@id/itemsp_stt"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/itemsp_image"
+        app:layout_constraintWidth="0dp"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintWidth_max="150dp"/>
+
+    <!-- Product Image -->
+    <ImageView
+        android:id="@+id/itemsp_image"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:src="@drawable/edittextshape"
+        app:layout_constraintStart_toEndOf="@id/itemsp_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/itemsp_description"
+        app:layout_constraintWidth="0dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintWidth_max="50dp"/>
+
+    <!-- Product Description -->
+    <TextView
+        android:id="@+id/itemsp_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textSize="14sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@id/itemsp_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/itemsp_type"
+        app:layout_constraintWidth="0dp"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintWidth_max="100dp"/>
+
+    <!-- Product Type -->
+    <TextView
+        android:id="@+id/itemsp_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Type"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/itemsp_description"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/itemsp_gia"
+        app:layout_constraintWidth="0dp"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintWidth_max="100dp"/>
+
+    <!-- Product Price -->
+    <TextView
+        android:id="@+id/itemsp_gia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/itemsp_type"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth="0dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintWidth_max="80dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

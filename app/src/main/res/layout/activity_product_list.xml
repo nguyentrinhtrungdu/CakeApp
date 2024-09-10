@@ -6,13 +6,49 @@
     android:padding="16dp">
 
     <!-- Title of the product list -->
-    <TextView
-        android:id="@+id/product_list_title"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Product List"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:background="?attr/#fff"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:padding="8dp">
+
+        <!-- Title of the toolbar -->
+        <TextView
+            android:id="@+id/product_list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product List"
+            android:textColor="#333"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginEnd="72dp" />
+
+        <!-- Edit Button -->
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Xóa"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Delete Button -->
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Sửa"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="8dp"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <!-- Header Row -->
     <LinearLayout
@@ -58,14 +94,7 @@
             android:textSize="16sp"
             android:layout_marginEnd="8dp" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Loại"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:layout_marginEnd="8dp" />
+
 
         <TextView
             android:layout_width="0dp"

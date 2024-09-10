@@ -15,6 +15,11 @@ import com.example.cakeapp.model.AddProductResponse;
 import com.example.cakeapp.retrofit.ApiApp;
 import com.example.cakeapp.retrofit.RetrofitClient;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -48,10 +53,16 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void setupSpinner() {
-        // Define the product types
-        String[] productTypes = {"Select Type", "Type 1", "Type 2", "Type 3"};
+        // Define the product types and their corresponding integer IDs
+        final Map<Integer, String> productTypesMap = new HashMap<>();
+        productTypesMap.put(1, "Type 1");
+        productTypesMap.put(2, "Type 2");
+        productTypesMap.put(3, "Type 3");
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
+        // Create a list of product type names for the spinner
+        List<String> productTypes = new ArrayList<>(productTypesMap.values());
+
+        // Create an ArrayAdapter using the list of product type names and a default spinner layout
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, productTypes);
 
@@ -60,7 +71,11 @@ public class AddProductActivity extends AppCompatActivity {
 
         // Apply the adapter to the spinner
         spinnerCategory.setAdapter(adapter);
+
+        // Set a tag on the spinner to store the mapping
+        spinnerCategory.setTag(productTypesMap);
     }
+
 
     private void addProduct() {
         String name = editTextName.getText().toString().trim();

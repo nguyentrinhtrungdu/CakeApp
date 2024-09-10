@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <!-- Admin Dashboard Heading -->
+    <TextView
+        android:id="@+id/admin_dashboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/btn_add_category"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Category"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:textColor="@android:color/white" />
+
+    <!-- Button to navigate to Category List Activity -->
+    <Button
+        android:id="@+id/btn_category_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category List"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:textColor="@android:color/white" />
+    <!-- Button to navigate to Add Product Activity -->
+    <Button
+        android:id="@+id/btn_add_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Product"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:textColor="@android:color/white" />
+
+    <!-- Button to navigate to Product List Activity -->
+    <Button
+        android:id="@+id/btn_product_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Product List"
+        android:padding="16dp"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:textColor="@android:color/white" />
+
+    <!-- Add more admin features as needed -->
+    <Button
+        android:id="@+id/btn_dangxuat"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#673AB7"
+        android:padding="16dp"
+        android:text="Đăng Xuất"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

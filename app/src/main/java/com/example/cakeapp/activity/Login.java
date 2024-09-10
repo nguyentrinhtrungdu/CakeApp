@@ -97,8 +97,18 @@ public class Login extends AppCompatActivity {
                                 Paper.book().write("islogin", isLogin);
                                 Utils.user_current = userModel.getResult().get(0);
                                 Paper.book().write("id", Utils.user_current.getId());
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
+                                Paper.book().write("role", Utils.user_current.getRole());
+
+                                // Check if the logged-in user is admin or user
+                                if ("admin".equals(Utils.user_current.getRole())) {
+                                    // If admin, redirect to AdminActivity
+                                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    // If normal user, redirect to MainActivity
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                }
                                 finish();
                             } else {
                                 showToast(userModel.getMessage());
@@ -110,6 +120,8 @@ public class Login extends AppCompatActivity {
                         }
                 ));
     }
+
+
 
 
 

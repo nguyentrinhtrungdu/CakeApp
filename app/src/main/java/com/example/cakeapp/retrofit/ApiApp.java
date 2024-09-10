@@ -1,6 +1,8 @@
 package com.example.cakeapp.retrofit;
 
 
+import com.example.cakeapp.model.AddCategoryResponse;
+import com.example.cakeapp.model.AddProductResponse;
 import com.example.cakeapp.model.LoaiSpModel;
 import com.example.cakeapp.model.SanPhamMoiModel;
 import com.example.cakeapp.model.User;
@@ -78,6 +80,24 @@ public interface ApiApp {
             @Field("email") String email,
             @Field("pass") String pass,
             @Field("num") String num
+    );
+
+    @POST("themsanphammoi.php")
+    @FormUrlEncoded
+    Observable<AddProductResponse> addProduct(
+            @Field("tensp") String tensp,
+            @Field("hinhanh") String hinhanh,
+            @Field("mota") String mota,
+            @Field("loai") int loai,
+            @Field("giasp") int giasp
+    );
+
+    @POST("themloaisp.php")
+    @FormUrlEncoded
+    Observable<AddCategoryResponse> addCategory(
+            @Field("tensanpham") String tensanpham,
+            @Field("hinhanh") String hinhanh
+
     );
 
 }

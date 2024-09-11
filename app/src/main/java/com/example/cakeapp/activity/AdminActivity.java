@@ -13,7 +13,7 @@ import io.paperdb.Paper;
 
 public class AdminActivity extends AppCompatActivity {
 
-    private Button btnAddCategory, btnCategoryList, btnAddProduct, btnProductList, btnDangXuat;
+    private Button  btnAddProduct, btnProductList, btnDangXuat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,23 +21,14 @@ public class AdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
 
         // Initialize buttons
-        btnAddCategory = findViewById(R.id.btn_add_category);
-        btnCategoryList = findViewById(R.id.btn_category_list);
+
         btnAddProduct = findViewById(R.id.btn_add_product);
         btnProductList = findViewById(R.id.btn_product_list);
         btnDangXuat = findViewById(R.id.btn_dangxuat);
 
-        // Set OnClickListener to navigate to AddCategoryActivity
-        btnAddCategory.setOnClickListener(view -> {
-            Intent intent = new Intent(AdminActivity.this, AddCategoryActivity.class);
-            startActivity(intent);
-        });
 
-        // Set OnClickListener to navigate to CategoryListActivity
-        btnCategoryList.setOnClickListener(view -> {
-            Intent intent = new Intent(AdminActivity.this, CategoryListActivity.class);
-            startActivity(intent);
-        });
+
+
 
         // Set OnClickListener to navigate to AddProductActivity
         btnAddProduct.setOnClickListener(view -> {

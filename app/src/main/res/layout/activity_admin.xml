@@ -17,28 +17,7 @@
         android:layout_marginBottom="32dp"
         android:gravity="center_horizontal" />
 
-    <Button
-        android:id="@+id/btn_add_category"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Category"
-        android:layout_marginBottom="16dp"
-        android:padding="16dp"
-        android:backgroundTint="@android:color/holo_red_light"
-        android:textColor="@android:color/white" />
-
-    <!-- Button to navigate to Category List Activity -->
-    <Button
-        android:id="@+id/btn_category_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Category List"
-        android:layout_marginBottom="16dp"
-        android:padding="16dp"
-        android:backgroundTint="@android:color/holo_red_light"
-        android:textColor="@android:color/white" />
-    <!-- Button to navigate to Add Product Activity -->
     <Button
         android:id="@+id/btn_add_product"
         android:layout_width="wrap_content"

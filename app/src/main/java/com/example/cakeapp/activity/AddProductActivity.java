@@ -1,5 +1,6 @@
 package com.example.cakeapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -55,9 +56,9 @@ public class AddProductActivity extends AppCompatActivity {
     private void setupSpinner() {
         // Define the product types and their corresponding integer IDs
         final Map<Integer, String> productTypesMap = new HashMap<>();
-        productTypesMap.put(1, "Type 1");
-        productTypesMap.put(2, "Type 2");
-        productTypesMap.put(3, "Type 3");
+        productTypesMap.put(1, "Bánh Sinh Nhật");
+        productTypesMap.put(2, "Bánh Mì");
+
 
         // Create a list of product type names for the spinner
         List<String> productTypes = new ArrayList<>(productTypesMap.values());
@@ -83,35 +84,47 @@ public class AddProductActivity extends AppCompatActivity {
         String description = editTextDescription.getText().toString().trim();
         String priceStr = editTextPrice.getText().toString().trim();
 
-        // Get selected category (spinner category is 1-based, adjust accordingly)
-        int category = spinnerCategory.getSelectedItemPosition();
+        // Lấy danh sách loại sản phẩm từ Spinner
+        Map<Integer, String> productTypesMap = (Map<Integer, String>) spinnerCategory.getTag();
+        int selectedPosition = spinnerCategory.getSelectedItemPosition();
+        Integer categoryId = null;
 
-        if (category == 0) {
-            Toast.makeText(this, "Please select a product type", Toast.LENGTH_SHORT).show();
+        // Ánh xạ vị trí chọn trong Spinner thành ID loại sản phẩm
+        if (selectedPosition >= 0 && selectedPosition < productTypesMap.size()) {
+            categoryId = new ArrayList<>(productTypesMap.keySet()).get(selectedPosition);
+        }
+
+        if (categoryId == null) {
+            Toast.makeText(this, "Vui lòng chọn loại sản phẩm", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (name.isEmpty() || image.isEmpty() || description.isEmpty() || priceStr.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
         int price = Integer.parseInt(priceStr);
 
         ApiApp apiApp = RetrofitClient.getInstance("YOUR_BASE_URL_HERE").create(ApiApp.class);
-        apiApp.addProduct(name, image, description, category, price)
+        apiApp.addProduct(name, image, description, categoryId, price)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         response -> {
                             if (response.isSuccess()) {
-                                Toast.makeText(getApplicationContext(), "Product added successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Thêm sản phẩm thành công", Toast.LENGTH_SHORT).show();
+
+                                // Tạo Intent để mở ProductListActivity
+                                Intent intent = new Intent(AddProductActivity.this, ProductListActivity.class);
+                                startActivity(intent);
+                                finish();
                             } else {
-                                Toast.makeText(getApplicationContext(), "Failed to add product", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Thêm sản phẩm thất bại", Toast.LENGTH_SHORT).show();
                             }
                         },
                         throwable -> {
-                            Toast.makeText(getApplicationContext(), "Error: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Lỗi: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                 );
     }

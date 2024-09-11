@@ -1,9 +1,10 @@
 package com.example.cakeapp.model;
 
-public class AddCategoryResponse {
+public class DeleteProductResponse {
     private boolean success;
     private String message;
 
+    // Getters và setters
     public boolean isSuccess() {
         return success;
     }

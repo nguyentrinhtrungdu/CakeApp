@@ -1,5 +1,6 @@
 package com.example.cakeapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,13 +31,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 public class ProductListActivity extends AppCompatActivity {
-
+    private static final int REQUEST_CODE_EDIT_PRODUCT = 1;
     private RecyclerView recyclerView;
     private SanPhamListAdapter adapter;
     private List<SanPhamMoi> productList;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ApiApp apiApp;
     private Button button_delete;
+    private Button button_edit;
     private Toolbar toolbar;
 
     @Override
@@ -64,6 +67,7 @@ public class ProductListActivity extends AppCompatActivity {
         // Initialize Toolbar and Buttons
         Toolbar toolbar = findViewById(R.id.toolbar);
         button_delete = toolbar.findViewById(R.id.button_delete);
+        button_edit = toolbar.findViewById(R.id.button_edit);
 
         button_delete.setOnClickListener(v -> {
             List<SanPhamMoi> selectedProducts = adapter.getSelectedProducts();
@@ -83,9 +87,22 @@ public class ProductListActivity extends AppCompatActivity {
             }
         });
 
+        button_edit.setOnClickListener(v -> {
+            List<SanPhamMoi> selectedProducts = adapter.getSelectedProducts();
+            if (selectedProducts.size() == 1) {
+                SanPhamMoi selectedProduct = selectedProducts.get(0);
+                Intent intent = new Intent(ProductListActivity.this, EditProductActivity.class);
+                intent.putExtra("PRODUCT_ID", selectedProduct.getId());
+                startActivityForResult(intent, REQUEST_CODE_EDIT_PRODUCT); // Chú ý: Thay đổi từ startActivity() thành startActivityForResult()
+            } else {
+                Toast.makeText(getApplicationContext(), "Vui lòng chọn một sản phẩm để sửa", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void ActionToolBar() {
+
+
+        private void ActionToolBar() {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
 
@@ -104,6 +121,18 @@ public class ProductListActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_EDIT_PRODUCT && resultCode == RESULT_OK) {
+            if (data != null && data.getBooleanExtra("UPDATE_SUCCESS", false)) {
+                // Refresh the product list
+                fetchData();
+            }
+        }
     }
 
 

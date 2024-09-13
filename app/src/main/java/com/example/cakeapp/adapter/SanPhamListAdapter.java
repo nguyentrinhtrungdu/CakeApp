@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.cakeapp.R;
 import com.example.cakeapp.activity.ChiTietActivity;
+import com.example.cakeapp.activity.EditProductActivity;
 import com.example.cakeapp.model.SanPhamMoi;
 
 import java.text.DecimalFormat;
@@ -42,6 +43,7 @@ public class SanPhamListAdapter extends RecyclerView.Adapter<SanPhamListAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         SanPhamMoi sanPhamMoi = productList.get(position);
+
         holder.textViewStt.setText(String.valueOf(position + 1));
         // Bind data to views
         holder.txtTen.setText(sanPhamMoi.getTensp());
@@ -65,11 +67,21 @@ public class SanPhamListAdapter extends RecyclerView.Adapter<SanPhamListAdapter.
         holder.itemView.setOnClickListener(v -> {
             if (selectedProducts.contains(sanPhamMoi)) {
                 selectedProducts.remove(sanPhamMoi);
-                notifyItemChanged(position);  // Update the specific item
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white)); // Update background color
             } else {
                 selectedProducts.add(sanPhamMoi);
-                notifyItemChanged(position);  // Update the specific item
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.darker_gray)); // Update background color
             }
+            notifyItemChanged(position);  // Update the specific item
+        });
+
+        // Set long click listener to enable editing the product
+        holder.itemView.setOnLongClickListener(v -> {
+            // Handle editing logic here
+            Intent intent = new Intent(context, EditProductActivity.class);
+            intent.putExtra("PRODUCT_ID", sanPhamMoi.getId());
+            context.startActivity(intent);
+            return true;
         });
     }
 

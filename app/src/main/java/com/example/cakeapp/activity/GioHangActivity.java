@@ -1,5 +1,7 @@
 package com.example.cakeapp.activity;
 
+import static com.example.cakeapp.utils.Utils.manggiohang;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
@@ -49,8 +52,8 @@ public class GioHangActivity extends AppCompatActivity {
 
     private void  tinhTongTien() {
         tongtiensp = 0;
-        for(int i=0;i<Utils.manggiohang.size();i++){
-            tongtiensp = tongtiensp+ (Utils.manggiohang.get(i).getGiasp()*Utils.manggiohang.get(i).getSoluong());
+        for(int i = 0; i< manggiohang.size(); i++){
+            tongtiensp = tongtiensp+ (manggiohang.get(i).getGiasp()* manggiohang.get(i).getSoluong());
         }
             DecimalFormat decimalFormat =new DecimalFormat("###,###,###");
 
@@ -69,10 +72,10 @@ public class GioHangActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        if(Utils.manggiohang.size()==0){
+        if(manggiohang.size()==0){
             giohangtrong.setVisibility(View.VISIBLE);
         }else {
-            adapter = new GioHangAdapter(getApplicationContext(),Utils.manggiohang);
+            adapter = new GioHangAdapter(getApplicationContext(), manggiohang);
             recyclerView.setAdapter(adapter);
         }
         btnmuahang.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +97,7 @@ public class GioHangActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     protected void onStart() {

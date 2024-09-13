@@ -6,6 +6,7 @@ public class GioHang {
     int giasp;
     String hinhsp;
     int soluong;
+    private int tongTien;
 
     public int getIdsp() {
         return idsp;
@@ -46,4 +47,13 @@ public class GioHang {
     public void setSoluong(int soluong) {
         this.soluong = soluong;
     }
+
+    public int getTongTien() {
+        return tongTien;
+    }
+
+    public void setTongTien(int tongTien) {
+        this.tongTien = tongTien;
+    }
+
 }

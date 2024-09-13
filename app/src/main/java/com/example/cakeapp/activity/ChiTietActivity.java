@@ -1,10 +1,9 @@
 package com.example.cakeapp.activity;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,8 +12,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.ActionBar;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -59,43 +57,43 @@ public class ChiTietActivity extends AppCompatActivity {
     }
 
     private void themGioHang() {
-
-        if(Utils.manggiohang.size()>0){
+        int soluong = Integer.parseInt(spinner.getSelectedItem().toString());
+        if (Utils.manggiohang.size() > 0) {
             boolean flag = false;
-            int soluong =Integer.parseInt(spinner.getSelectedItem().toString());
-            for (int i=0;i<Utils.manggiohang.size();i++){
-                if(Utils.manggiohang.get(i).getIdsp()==sanPhamMoi.getId()){
+            for (int i = 0; i < Utils.manggiohang.size(); i++) {
+                if (Utils.manggiohang.get(i).getIdsp() == sanPhamMoi.getId()) {
                     Utils.manggiohang.get(i).setSoluong(soluong + Utils.manggiohang.get(i).getSoluong());
-                    int gia =sanPhamMoi.getGiasp()*Utils.manggiohang.get(i).getSoluong();
-                    Utils.manggiohang.get(i).setGiasp(gia);
-                    flag =true;
+                    // Chỉ cập nhật tổng tiền, không thay đổi giá gốc
+                    int tongtien = sanPhamMoi.getGiasp() * Utils.manggiohang.get(i).getSoluong();
+                    Utils.manggiohang.get(i).setTongTien(tongtien);
+                    flag = true;
                 }
             }
-            if(flag==false){
-
-                int gia = sanPhamMoi.getGiasp()*soluong;
+            if (!flag) {
+                int tongtien = sanPhamMoi.getGiasp() * soluong;
                 GioHang gioHang = new GioHang();
-                gioHang.setGiasp(gia);
+                gioHang.setGiasp(sanPhamMoi.getGiasp());  // Giá gốc không thay đổi
                 gioHang.setSoluong(soluong);
+                gioHang.setTongTien(tongtien);  // Tổng tiền = giá gốc * số lượng
                 gioHang.setIdsp(sanPhamMoi.getId());
                 gioHang.setTensp(sanPhamMoi.getTensp());
                 gioHang.setHinhsp(sanPhamMoi.getHinhanh());
                 Utils.manggiohang.add(gioHang);
             }
-        }else {
-            int soluong = Integer.parseInt(spinner.getSelectedItem().toString());
-            int gia = sanPhamMoi.getGiasp()*soluong;
+        } else {
+            int tongtien = sanPhamMoi.getGiasp() * soluong;
             GioHang gioHang = new GioHang();
-            gioHang.setGiasp(gia);
+            gioHang.setGiasp(sanPhamMoi.getGiasp());  // Giá gốc không thay đổi
             gioHang.setSoluong(soluong);
+            gioHang.setTongTien(tongtien);  // Tổng tiền = giá gốc * số lượng
             gioHang.setIdsp(sanPhamMoi.getId());
             gioHang.setTensp(sanPhamMoi.getTensp());
             gioHang.setHinhsp(sanPhamMoi.getHinhanh());
             Utils.manggiohang.add(gioHang);
         }
         int totalItem = 0;
-        for(int i= 0;i<Utils.manggiohang.size();i++){
-            totalItem= totalItem+Utils.manggiohang.get(i).getSoluong();
+        for (int i = 0; i < Utils.manggiohang.size(); i++) {
+            totalItem = totalItem + Utils.manggiohang.get(i).getSoluong();
         }
         badge.setText(String.valueOf(totalItem));
     }
@@ -112,7 +110,7 @@ public class ChiTietActivity extends AppCompatActivity {
             giasp.setText("Giá: " + decimalFormat.format(sanPhamMoi.getGiasp())+" Đ" );
 
             Integer[] so = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-            ArrayAdapter<Integer> adapterspin = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, so);
+            ArrayAdapter<Integer> adapterspin = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, so);
             spinner.setAdapter(adapterspin);
         }
     }

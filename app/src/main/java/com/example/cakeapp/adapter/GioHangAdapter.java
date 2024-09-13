@@ -49,20 +49,21 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
         holder.item_giohang_soluong.setText(gioHang.getSoluong()+" ");
         Glide.with(context).load(gioHang.getHinhsp()).into(holder.item_giohang_image);
         DecimalFormat decimalFormat =new DecimalFormat("###,###,###");
-        holder.item_giohang_gia.setText("Giá: "+decimalFormat.format(gioHang.getGiasp())+" Đ");
-        int gia = gioHang.getSoluong()* gioHang.getGiasp();
-        holder.item_giohang_giasp2.setText(decimalFormat.format(gia)+" Đ");
+        holder.item_giohang_gia.setText("Giá: " + decimalFormat.format(gioHang.getGiasp()) + " Đ");
+        int totalPrice = gioHang.getSoluong() * gioHang.getGiasp();
+        holder.item_giohang_giasp2.setText(decimalFormat.format(totalPrice) + " Đ");
         holder.setListenner(new IImageClickListenner() {
             @Override
             public void onImageClick(View view, int pos, int giatri) {
                 if(giatri==1){
                     if(gioHangList.get(pos).getSoluong()>1){
-                        int soluongmoi= gioHangList.get(pos).getSoluong()-1;
-                        gioHangList.get(pos).setSoluong(soluongmoi);
+                        int newQuantity = gioHangList.get(pos).getSoluong() - 1;
+                        gioHangList.get(pos).setSoluong(newQuantity);
 
-                        holder.item_giohang_soluong.setText(gioHangList.get(pos).getSoluong()+" ");
-                        int gia = gioHangList.get(pos).getSoluong()* gioHangList.get(pos).getGiasp();
-                        holder.item_giohang_giasp2.setText(decimalFormat.format(gia)+" Đ");
+                        holder.item_giohang_soluong.setText(newQuantity + " ");
+                        int updatedTotalPrice = newQuantity * gioHangList.get(pos).getGiasp();
+                        holder.item_giohang_giasp2.setText(decimalFormat.format(updatedTotalPrice) + " Đ");
+
                         EventBus.getDefault().postSticky(new TinhTongEvent());
                     } else if (gioHangList.get(pos).getSoluong()==1) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
@@ -88,12 +89,13 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.MyViewHo
                 }
                 else if(giatri==2){
 
-                        int soluongmoi= gioHangList.get(pos).getSoluong()+1;
-                        gioHangList.get(pos).setSoluong(soluongmoi);
+                    int newQuantity = gioHangList.get(pos).getSoluong() + 1;
+                    gioHangList.get(pos).setSoluong(newQuantity);
 
-                    holder.item_giohang_soluong.setText(gioHangList.get(pos).getSoluong()+" ");
-                    int gia = gioHangList.get(pos).getSoluong()* gioHangList.get(pos).getGiasp();
-                    holder.item_giohang_giasp2.setText(decimalFormat.format(gia)+" Đ");
+                    holder.item_giohang_soluong.setText(newQuantity + " ");
+                    int updatedTotalPrice = newQuantity * gioHangList.get(pos).getGiasp();
+                    holder.item_giohang_giasp2.setText(decimalFormat.format(updatedTotalPrice) + " Đ");
+
                     EventBus.getDefault().postSticky(new TinhTongEvent());
                 }
 

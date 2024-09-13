@@ -4,6 +4,7 @@ package com.example.cakeapp.retrofit;
 import com.example.cakeapp.model.AddProductResponse;
 import com.example.cakeapp.model.DeleteProductResponse;
 import com.example.cakeapp.model.LoaiSpModel;
+import com.example.cakeapp.model.ProductRespone;
 import com.example.cakeapp.model.SanPhamMoiModel;
 import com.example.cakeapp.model.User;
 import com.example.cakeapp.model.UserModel;
@@ -79,6 +80,9 @@ public interface ApiApp {
             @Field("num") String num
     );
 
+    @GET("getProductById.php")
+    Observable<ProductRespone> getProductById(@Query("id") int productId);
+
     @POST("themsanphammoi.php")
     @FormUrlEncoded
     Observable<AddProductResponse> addProduct(
@@ -93,6 +97,16 @@ public interface ApiApp {
     Observable<DeleteProductResponse> deleteProduct(@Query("id") int id);
 
 
+    @POST("update_product.php")
+    @FormUrlEncoded
+    Observable<SanPhamMoiModel> updateProduct(
+            @Field("id") int id,
+            @Field("tensp") String tensp,
+            @Field("hinhanh") String hinhanh,
+            @Field("mota") String mota,
+            @Field("loai") int loai,
+            @Field("giasp") int giasp
+    );
 
 
 }

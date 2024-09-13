@@ -20,6 +20,9 @@
             android:name=".activity.EditProductActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.EditProduct"
+            android:exported="false" />
+        <activity
             android:name=".activity.CategoryListActivity"
             android:exported="false" />
         <activity

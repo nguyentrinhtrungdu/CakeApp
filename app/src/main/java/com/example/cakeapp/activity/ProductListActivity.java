@@ -2,9 +2,12 @@ package com.example.cakeapp.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -33,12 +36,14 @@ public class ProductListActivity extends AppCompatActivity {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ApiApp apiApp;
     private Button button_delete;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
-
+        toolbar = findViewById(R.id.toolbar);
+        ActionToolBar();
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recycler_view_products);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -79,6 +84,28 @@ public class ProductListActivity extends AppCompatActivity {
         });
 
     }
+
+    private void ActionToolBar() {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true); // Hiển thị nút quay lại
+            toolbar.getNavigationIcon().setTint(getResources().getColor(R.color.black));
+        }
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Đóng Activity hiện tại và quay lại Activity trước đó
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void fetchData() {
         compositeDisposable.add(apiApp.getSpMoi()

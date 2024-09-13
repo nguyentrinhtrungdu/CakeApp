@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 2:
                         Intent banhmi= new Intent(getApplicationContext(), banhsinhnhatActivity.class);
-                        banhmi.putExtra("loai",0);
+                        banhmi.putExtra("loai",2);
                         startActivity(banhmi);
                         break;
 

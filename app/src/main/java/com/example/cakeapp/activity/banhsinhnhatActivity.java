@@ -141,7 +141,7 @@ public class banhsinhnhatActivity extends AppCompatActivity {
         if (actionBar != null) {
             if (loai == 1) {
                 actionBar.setTitle("Bánh Sinh Nhật");
-            } else if (loai == 0) {
+            } else if (loai == 2) {
                 actionBar.setTitle("Bánh Mì");
             } else {
                 actionBar.setTitle("Default Title"); // Tiêu đề mặc định nếu không khớp với điều kiện nào
